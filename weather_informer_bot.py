@@ -29,7 +29,7 @@ lang_eng = True
 translator = GoogleTranslator(source='en', target='ru').translate
 
 output_en = 'Description - {1} {0}' \
-            'Temperature(Celsius) - {2} {0}' \
+            'Temperature(°С) - {2} {0}' \
             'Wind(Km/h) - {3} {0}' \
             'Wind direction - {4} {0}' \
             'Humidity(%) - {5} {0}' \
@@ -38,7 +38,7 @@ output_en = 'Description - {1} {0}' \
             'Sunset - {8}'
 
 output_ru = 'Погода -- {1} {0}' \
-            'Температура(Цельсии) -- {2} {0}' \
+            'Температура(°С) -- {2} {0}' \
             'Ветер(км/ч) -- {3} {0}' \
             'Направление ветра -- {4} {0}' \
             'Влажность(%) -- {5} {0}' \
@@ -61,7 +61,7 @@ def start_command(message):
     bot.send_message(message.chat.id, 'Choose your language below:', reply_markup=kb)
     sleep(4)
     if lang_eng:
-        kb.add(btn_help_en)  # # The appropriate help button added after '/start'
+        kb.add(btn_help_en)  # The appropriate help button added after '/start'
         bot.send_message(message.chat.id, 'Input a city(for more information click on "Help"):', reply_markup=kb)
     else:
         kb.add(btn_help_ru)  # The appropriate help button added after '/start'
@@ -103,9 +103,12 @@ def weather(message):
 
             inf = obs.weather
 
-            dt = {"desc": inf.detailed_status.capitalize(), "temp": inf.temperature(unit='celsius')['temp'],
-                  "wind": inf.wind()['speed'], "deg": degree_to_cardinal_dir(inf.wind()['deg']),
-                  "hum": inf.humidity, "pres": inf.pressure['press'],
+            dt = {"desc": inf.detailed_status.capitalize(),
+                  "temp": inf.temperature(unit='celsius')['temp'],
+                  "wind": inf.wind()['speed'],
+                  "deg": degree_to_cardinal_dir(inf.wind()['deg']),
+                  "hum": inf.humidity,
+                  "pres": inf.pressure['press'],
                   "sunrise": utc_to_local(inf.sunrise_time('iso')[-14:-6]),
                   "sunset": utc_to_local(inf.sunset_time('iso')[-14:-6])  # Only the time will be displayed
                   }
