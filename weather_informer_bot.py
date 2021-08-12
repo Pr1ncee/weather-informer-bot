@@ -6,6 +6,7 @@ Uses telebot as API for Telegram
 # TODO Save 'lang_eng' variable out of program call
 # TODO Replace output_ru to transator(output_en) (fix russian formatting)
 # TODO Switch 'btn_help_(ru/en)' to the appropriate language when changing the languages
+from degrees_converter import degree_to_cardinal_dir
 from pyowm.utils.config import get_default_config
 from deep_translator import GoogleTranslator
 from pyowm.commons import exceptions
@@ -16,36 +17,10 @@ import telebot
 import pyowm
 
 
-# Figures out the direction of the wind depending on the given degrees
-def degree_to_cardinal_dir(degree):
-    degree = int(degree)
-    if 337 < degree < 361 or -1 < degree < 23:
-        return 'North'
-    elif 22 < degree < 68:
-        return 'North-East'
-    elif 67 < degree < 113:
-        return 'East'
-    elif 112 < degree < 158:
-        return 'South-East'
-    elif 157 < degree < 203:
-        return 'South'
-    elif 202 < degree < 248:
-        return 'South-West'
-    elif 247 < degree < 293:
-        return 'West'
-    elif 292 < degree < 338:
-        return 'North-West'
+token = '857170654:AAHnbgKHXquDNukURpA7VbzjtsYdpcs2GVA'  # The token for TelegramAPI
+api_key = 'e7e2f5d5f97de669df288c889aa2277b'  # The key for the OpenWeatherMapAPI
 
-
-def utc_to_local(utc, local=3):
-    full_local = int(utc[:2]) + local
-    return str(full_local) + utc[2:]
-
-
-token = '857170654:AAHnbgKHXquDNukURpA7VbzjtsYdpcs2GVA'
 bot = telebot.TeleBot(token)
-
-api_key = 'e7e2f5d5f97de669df288c889aa2277b'
 owm = OWM(api_key=api_key)
 mgr = owm.weather_manager()
 
