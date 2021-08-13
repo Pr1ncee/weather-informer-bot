@@ -15,7 +15,6 @@ from pyowm.owm import OWM
 from time import sleep
 import telebot
 import pyowm
-import datetime
 
 
 token = '857170654:AAHnbgKHXquDNukURpA7VbzjtsYdpcs2GVA'  # The token for TelegramAPI
