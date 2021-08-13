@@ -6,7 +6,7 @@ Uses telebot as API for Telegram
 # TODO Save 'lang_eng' variable out of program call
 # TODO Replace output_ru to transator(output_en) (fix russian formatting)
 # TODO Switch 'btn_help_(ru/en)' to the appropriate language when changing the languages
-from degrees_converter import degree_to_cardinal_dir
+from degrees_converter import degrees_to_cardinal
 from pyowm.utils.config import get_default_config
 from deep_translator import GoogleTranslator
 from time_converter import utc_to_local
@@ -16,6 +16,7 @@ from pyowm.owm import OWM
 from time import sleep
 import telebot
 import pyowm
+import datetime
 
 
 token = '857170654:AAHnbgKHXquDNukURpA7VbzjtsYdpcs2GVA'  # The token for TelegramAPI
@@ -34,8 +35,8 @@ output_en = 'Description - {1} {0}' \
             'Wind direction - {4} {0}' \
             'Humidity(%) - {5} {0}' \
             'Pressure(mmHg) - {6} {0}' \
-            'Sunrise - {7} {0}' \
-            'Sunset - {8}'
+            'Sunrise(UTC) - {7} {0}' \
+            'Sunset(UTC) - {8}'
 
 output_ru = 'Погода -- {1} {0}' \
             'Температура(°С) -- {2} {0}' \
@@ -43,8 +44,8 @@ output_ru = 'Погода -- {1} {0}' \
             'Направление ветра -- {4} {0}' \
             'Влажность(%) -- {5} {0}' \
             'Давление(мм.рт.ст.) -- {6} {0}' \
-            'Восход -- {7} {0}' \
-            'Закат -- {8}'
+            'Восход(UTC) -- {7} {0}' \
+            'Закат(UTC) -- {8}'
 
 # Adding keyboard's buttons
 kb = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=False)
@@ -106,11 +107,11 @@ def weather(message):
             dt = {"desc": inf.detailed_status.capitalize(),
                   "temp": inf.temperature(unit='celsius')['temp'],
                   "wind": inf.wind()['speed'],
-                  "deg": degree_to_cardinal_dir(inf.wind()['deg']),
+                  "deg": degrees_to_cardinal(inf.wind()['deg']),
                   "hum": inf.humidity,
                   "pres": inf.pressure['press'],
-                  "sunrise": utc_to_local(inf.sunrise_time('iso')[-14:-6]),
-                  "sunset": utc_to_local(inf.sunset_time('iso')[-14:-6])  # Only the time will be displayed
+                  "sunrise": inf.sunrise_time('iso')[-14:-6],
+                  "sunset": inf.sunset_time('iso')[-14:-6]  # Only the time will be displayed
                   }
 
             if lang_eng:
