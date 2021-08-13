@@ -10,15 +10,13 @@ from degrees_converter import degrees_to_cardinal
 from pyowm.utils.config import get_default_config
 from deep_translator import GoogleTranslator
 from pyowm.commons import exceptions
+from config import api_key, token
 from telebot import types
 from pyowm.owm import OWM
 from time import sleep
 import telebot
 import pyowm
 
-
-token = '857170654:AAHnbgKHXquDNukURpA7VbzjtsYdpcs2GVA'  # The token for TelegramAPI
-api_key = 'e7e2f5d5f97de669df288c889aa2277b'  # The key for the OpenWeatherMapAPI
 
 bot = telebot.TeleBot(token)
 owm = OWM(api_key=api_key)
@@ -36,14 +34,14 @@ output_en = 'Description - {1} {0}' \
             'Sunrise(UTC) - {7} {0}' \
             'Sunset(UTC) - {8}'
 
-output_ru = 'Погода -- {1} {0}' \
-            'Температура(°С) -- {2} {0}' \
-            'Ветер(км/ч) -- {3} {0}' \
-            'Направление ветра -- {4} {0}' \
-            'Влажность(%) -- {5} {0}' \
-            'Давление(мм.рт.ст.) -- {6} {0}' \
-            'Восход(UTC) -- {7} {0}' \
-            'Закат(UTC) -- {8}'
+output_ru = 'Погода - {1} {0}' \
+            'Температура(°С) - {2} {0}' \
+            'Ветер(км/ч) - {3} {0}' \
+            'Направление ветра - {4} {0}' \
+            'Влажность(%) - {5} {0}' \
+            'Давление(мм.рт.ст.) - {6} {0}' \
+            'Восход(UTC) - {7} {0}' \
+            'Закат(UTC) - {8}'
 
 # Adding keyboard's buttons
 kb = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=False)
@@ -109,7 +107,7 @@ def weather(message):
                   "hum": inf.humidity,
                   "pres": inf.pressure['press'],
                   "sunrise": inf.sunrise_time('iso')[-14:-6],
-                  "sunset": inf.sunset_time('iso')[-14:-6]  # Only the time will be displayed
+                  "sunset": inf.sunset_time('iso')[-14:-6]  # Only the time will be displayed (e.g. 17:11:23)
                   }
 
             if lang_eng:
