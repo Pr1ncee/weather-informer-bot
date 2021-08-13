@@ -9,7 +9,6 @@ Uses telebot as API for Telegram
 from degrees_converter import degrees_to_cardinal
 from pyowm.utils.config import get_default_config
 from deep_translator import GoogleTranslator
-from time_converter import utc_to_local
 from pyowm.commons import exceptions
 from telebot import types
 from pyowm.owm import OWM
