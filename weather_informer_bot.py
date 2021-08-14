@@ -4,7 +4,7 @@ Uses pyown for getting information about weather
 Uses telebot as API for Telegram
 """
 # TODO Save 'lang_eng' variable out of program call
-# TODO Replace output_ru to transator(output_en) (fix russian formatting)
+# TODO Replace 'output_ru' to 'transator(output_en)' (fix russian formatting)
 # TODO Switch 'btn_help_(ru/en)' to the appropriate language when changing the languages
 from degrees_converter import degrees_to_cardinal
 from pyowm.utils.config import get_default_config
@@ -34,6 +34,7 @@ output_en = 'Description - {1} {0}' \
             'Sunrise(UTC) - {7} {0}' \
             'Sunset(UTC) - {8}'
 
+# When using 'transator(output_en)' under-indented row appears, besides it some words are NOT 'capitalize()'
 output_ru = 'Погода - {1} {0}' \
             'Температура(°С) - {2} {0}' \
             'Ветер(км/ч) - {3} {0}' \
@@ -76,6 +77,7 @@ def weather(message):
         bot.send_message(message.chat.id,
                          "This bot provides you an information about a weather in any city of the world."
                          + "\n" + "Write a name of any city to know weather:", reply_markup=kb)
+
     elif message.text == 'Помощь':
         bot.send_message(message.chat.id, "Этот бот предоставляет информацию о погоде в любом городе в мире." + "\n"
                          + "Введите название любого города для того, чтобы узнать погоду:", reply_markup=kb)
@@ -96,8 +98,12 @@ def weather(message):
         try:
             obs = mgr.weather_at_place(f'{message.text}')
 
-            mgr.weather_at_place(f'{message.text}')
+        except exceptions.NotFoundError:
+            bot.send_message(message.chat.id, 'Make sure your city name is right')
+        except exceptions.UnauthorizedError:
+            bot.send_message(message.chat.id, 'Invalid API Key provided')
 
+        else:
             inf = obs.weather
 
             dt = {"desc": inf.detailed_status.capitalize(),
@@ -107,8 +113,7 @@ def weather(message):
                   "hum": inf.humidity,
                   "pres": inf.pressure['press'],
                   "sunrise": inf.sunrise_time('iso')[-14:-6],
-                  "sunset": inf.sunset_time('iso')[-14:-6]  # Only the time will be displayed (e.g. 17:11:23)
-                  }
+                  "sunset": inf.sunset_time('iso')[-14:-6]}  # Only the time will be displayed (e.g. 17:11:23)
 
             if lang_eng:
                 bot.send_message(message.chat.id, output_en.format('\n',
@@ -134,10 +139,6 @@ def weather(message):
                                                                    str(dt["sunset"])
                                                                    )
                                  )
-        except exceptions.NotFoundError:
-            bot.send_message(message.chat.id, 'Make sure your city name is right')
-        except exceptions.UnauthorizedError:
-            bot.send_message(message.chat.id, 'Invalid API Key provided')
 
 
 bot.polling(timeout=60)
