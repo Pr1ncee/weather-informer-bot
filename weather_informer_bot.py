@@ -3,19 +3,23 @@ This bot gives info about weather in a city you want to know
 Uses pyown for getting information about weather
 Uses telebot as API for Telegram
 """
+
 # TODO Save 'lang_eng' variable out of program call
 # TODO Replace 'output_ru' to 'transator(output_en)' (fix russian formatting)
 # TODO Switch 'btn_help_(ru/en)' to the appropriate language when changing the languages
-from degrees_converter import degrees_to_cardinal
-from pyowm.utils.config import get_default_config
-from deep_translator import GoogleTranslator
-from pyowm.commons import exceptions
-from config import api_key, token
-from telebot import types
-from pyowm.owm import OWM
+
 from time import sleep
-import telebot
+
+from deep_translator import GoogleTranslator
 import pyowm
+from pyowm.owm import OWM
+from pyowm.commons import exceptions
+from pyowm.utils.config import get_default_config
+import telebot
+from telebot import types
+
+from config import api_key, token
+from degrees_converter import degrees_to_cardinal
 
 
 bot = telebot.TeleBot(token)
